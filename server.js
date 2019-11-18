@@ -30,4 +30,12 @@ app.use(express.json());
 app.use(session({secret: "xYzUCAchitkara"}));
 
 
+const mongoose = require('mongoose')
+mongoose.connect(process.env.DATABASE_URL,{
+    useNewUrlParser : true
+})
+const db = mongoose.connection
+db.on('error' , error => console.log(error))// if error occurs on connection
+db.once('open' ,()=> console.log('Connected to database succesfulyy'))//runs once for checking the establishment of the connection
+
 app.listen(3000, ()=> console.log('server started'))
