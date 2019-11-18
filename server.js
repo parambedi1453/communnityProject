@@ -48,11 +48,12 @@ mongoose.connection.on('error',(err) => {
 
 //ROUTES requiring
 const indexRouter = require('./routes/index')
-
+const adminRouter = require('./routes/admin')
 
 
 // using routes
 app.use('/',indexRouter)
+app.use('/admin',adminRouter)
 
 
-app.listen(5000, ()=> console.log('server started'))
+app.listen(3000, ()=> console.log('server started'))
