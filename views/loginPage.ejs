@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Sign In Page</title>
+        <title>Login Page</title>
         <style>
             #parent{
                 text-align: center;
@@ -73,7 +73,7 @@
                 margin-top:0;
             }
 
-            #password,#username{
+            #password,#email{
                 width: 90%;
                 padding: 6px 10px;
                 font-size: 17px;
@@ -109,7 +109,7 @@
         <div id="parent" >
             <div id="child" class = "shadow">
                <p id = "div"> Log Into Your Account</p>
-               <input type = "text" id="username" name = "Username" placeholder="username" required>
+               <input type = "text" id="email" name = "email" placeholder="email" required>
                <br>
                <br>
                <input type = "password" id="password" name="Password" placeholder="password" required>
@@ -129,19 +129,19 @@
     </body>
     <script>
 
-    var username = document.getElementById("username");
+    var email = document.getElementById("email");
     var password = document.getElementById("password");
     var loginbtn = document.getElementById("loginbtn");
 
         loginbtn.addEventListener("click",function(event){
-            if(username.value == "")
-            alert("Enter username");
+            if(email.value == "")
+            alert("Enter email");
             else if(password.value == "")
             alert("Enter Password");
             else
             {
                 var ob = new Object();
-                ob.username  = username.value;
+                ob.email  = email.value;
                 ob.password = password.value;
 
                 var request =new XMLHttpRequest();
@@ -159,6 +159,8 @@
                     alert("ENTER CORREECT EMAIL/PASSWORD");
                     else{
                         var logob = JSON.parse(request.responseText);
+                        console.log("********************")
+                        console.log(logob)
                         if(logob.state == "1")
                         window.location="/wrongUser"
                         else if(logob.role.toLowerCase() == "user"||logob.role.toLowerCase() == "communitybuilder")

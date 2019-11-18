@@ -12,7 +12,7 @@ var multer = require('multer')
 var passport = require('passport')
 var bodyParser = require('body-parser')
 var app = express()
-
+var mongoose = require('mongoose')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,13 +30,21 @@ app.use(express.json());
 app.use(session({secret: "xYzUCAchitkara"}));
 
 
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 mongoose.connect(process.env.DATABASE_URL,{
     useNewUrlParser : true
 })
-const db = mongoose.connection
-db.on('error' , error => console.log(error))// if error occurs on connection
-db.once('open' ,()=> console.log('Connected to database succesfulyy'))//runs once for checking the establishment of the connection
+
+
+mongoose.connection.on('error',(err) => {
+    console.log('DB connection Error');
+  })
+
+  mongoose.connection.on('connected',(err) => {
+    //  useNewUrlParser: true;
+    console.log('DB connected');
+  })
+
 
 //ROUTES requiring
 const indexRouter = require('./routes/index')
@@ -47,4 +55,4 @@ const indexRouter = require('./routes/index')
 app.use('/',indexRouter)
 
 
-app.listen(3000, ()=> console.log('server started'))
+app.listen(5000, ()=> console.log('server started'))
