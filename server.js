@@ -38,4 +38,13 @@ const db = mongoose.connection
 db.on('error' , error => console.log(error))// if error occurs on connection
 db.once('open' ,()=> console.log('Connected to database succesfulyy'))//runs once for checking the establishment of the connection
 
+//ROUTES requiring
+const indexRouter = require('./routes/index')
+
+
+
+// using routes
+app.use('/',indexRouter)
+
+
 app.listen(3000, ()=> console.log('server started'))

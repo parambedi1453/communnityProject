@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Sign In Page</title>
+        <style>
+            #parent{
+                text-align: center;
+                margin-top: 9%;
+            }
+            #child{
+                display: inline-block;
+                height: 340px;
+                width: 50%;
+            }
+            @media(max-width: 768px)
+            {
+                #child{
+                    width: 100%;
+                }
+            }
+            p{
+                font-size: 30px;
+                text-align: left;
+            }
+            #header{
+                position: absolute;
+                font-weight: bold;
+                top: 0;
+            }
+            body{
+                font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+            }
+            header{
+                position: absolute;
+                right: 0;
+                left: 0;
+                top: 0;
+                margin-top: -20px;
+                height: 60px;
+                width: 100%;
+                padding: 10px;
+                text-align: left;
+                background-color: #fff;
+            }
+            .shadow{
+                -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.6);
+                box-shadow: 0 0 10px rgba(0,0,0,0.6);
+                font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+
+            }
+            footer.shadow{
+                position: absolute;
+                left: 0;
+                right:0;
+                bottom: 0;
+                width: 100%;
+                height: 40px;
+                padding: 10px;
+            }
+            #footer{
+                margin-top: 0%;
+                font-size:20px;
+                font-weight:bold;
+                text-align: center;
+                color:#7f7f84;
+            }
+
+            #div{
+                padding: 2px;
+                font-size: 34px;
+                text-align: center;
+                margin-top:0;
+            }
+
+            #password,#username{
+                width: 90%;
+                padding: 6px 10px;
+                font-size: 17px;
+                line-height: 1.5;
+                border: 1px solid #ced4da;
+            }
+
+
+
+            #submit{
+                border: 1px solid transparent;
+                padding: 9px 19px;
+                line-height: 1.5;
+                border-radius: 2px;
+                background-color: #28a745;
+                border-color: #28a745;
+                color: white;
+                font-size: 17px;
+            }
+
+        </style>
+
+    </head>
+    <body>
+
+        <header class = "shadow">
+            <p id = "header">cq</p>
+            <br>
+        </header>
+        <br>
+        <br>
+
+        <div id="parent" >
+            <div id="child" class = "shadow">
+               <p id = "div"> Log Into Your Account</p>
+               <input type = "text" id="username" name = "Username" placeholder="username" required>
+               <br>
+               <br>
+               <input type = "password" id="password" name="Password" placeholder="password" required>
+               <br>
+               <br>
+               <input type = "submit" value = "login" id = "loginbtn">
+               &nbsp;&nbsp;
+               <a class = "submit" href="/auth/github" id="githubbtn">GITHUB LOGIN</a>
+            </div>
+        </div>
+        <br><br><br>
+
+        <footer class = "shadow">
+        <p id = "footer"> cq &copy 2019</p>
+        </footer>
+
+    </body>
+    <script>
+
+    var username = document.getElementById("username");
+    var password = document.getElementById("password");
+    var loginbtn = document.getElementById("loginbtn");
+
+        loginbtn.addEventListener("click",function(event){
+            if(username.value == "")
+            alert("Enter username");
+            else if(password.value == "")
+            alert("Enter Password");
+            else
+            {
+                var ob = new Object();
+                ob.username  = username.value;
+                ob.password = password.value;
+
+                var request =new XMLHttpRequest();
+                var filename = '/login';
+                request.open('POST',filename);
+                request.setRequestHeader("content-Type","application/JSON");
+                request.send(JSON.stringify(ob));
+                request.onload = function()
+                {
+                    console.log(request.responseText);
+                    //var data = JSON.parse(this.responseText);
+                    //console.log(data);
+
+                    if(request.responseText=="INVALID USER")
+                    alert("ENTER CORREECT EMAIL/PASSWORD");
+                    else{
+                        var logob = JSON.parse(request.responseText);
+                        if(logob.state == "1")
+                        window.location="/wrongUser"
+                        else if(logob.role.toLowerCase() == "user"||logob.role.toLowerCase() == "communitybuilder")
+                        {
+                            if(logob.isupdate=="0")
+                            window.location ="/firstTime";
+                            else
+                            {
+                                alert("LOGIN SUCCESSFUL");
+                                window.location = "/usercommpage"
+                            }
+                        }
+                        else {
+                            alert("LOGIN SUCCESSFUL");
+                            window.location = "/profilePage"
+                        }
+                     }
+                }
+            }
+        });
+    </script>
+</html>
