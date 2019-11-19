@@ -21,7 +21,7 @@ function openbar()
 }
 function open_adduser_page()
 {
-    window.location = "/addUser"
+    window.location = "/admin/addUser"
 }
 function changepassword()
 {

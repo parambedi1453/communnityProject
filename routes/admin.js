@@ -10,4 +10,8 @@ router.get('/profilePage',logger,(req,res) =>{
 
 })
 
+router.get('/addUser',logger,function(req,res){
+    res.render('adduser',{obj : req.session.data});
+})
+
 module.exports = router

@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const logger = require('../middlewares/logger')
 const instance = require('../models/user')
+const nodemailer = require('nodemailer')
 // login router
 router.get('/',(req,res)=>{
     // res.send("STARTING WEB AGain")
@@ -52,6 +53,44 @@ router.post('/login',function(req,res){
         console.error(err)
         res.send(err)
       })
+})
+
+
+//create new user route
+router.post('/createuser',function(req,res){
+    // console.log(req.body);
+    instance.create(req.body,function(error,result){
+        if(error)
+        throw error;
+        else {
+            console.log(result);
+            var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+            user: process.env.MAILER_ID,
+            pass: process.env.MAILER_PASSWORD
+            }
+            });
+
+            var mailOptions = {
+                from: 'parambedi1453@gmail.com',
+                to: req.body.email,
+                subject: 'This Mail Is From CQ',
+                text: 'Hi you are enrolled to cq with username'+req.body.email+'and password'+req.body.password
+            };
+
+            transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+            console.log(error);
+            } else {
+            console.log('Email sent: ' + info.response);
+            console.log(result)
+            res.send(result)
+            }
+            });
+        }
+    })
 
 })
+
 module.exports = router
