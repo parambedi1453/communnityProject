@@ -130,7 +130,7 @@ function updateUser(uid,email,phone,city,status,role)
                },
                data: JSON.stringify(uob)
            });
-
+           window.location="/admin/userlistPage";
   });
 }
 
@@ -181,7 +181,7 @@ function updateState(uid,ustate)
                },
                data: JSON.stringify(uob)
            });
-           window.location="/userlistPage";
+           window.location="/admin/userlistPage";
 
     });
 
@@ -203,7 +203,7 @@ function updateState(uid,ustate)
                data: JSON.stringify(uob)
            });
 
-           window.location="/userlistPage";
+           window.location="/admin/userlistPage";
     });
 }
 

@@ -125,6 +125,8 @@ router.get('/exit',function(req,res){
     res.redirect('/');
 })
 
+
+// userlist pagination
 router.post('/getpaginationtable',function (req, res) {
     // console.log(req.body);
     // console.log(req.body.order[0].column);
@@ -232,5 +234,83 @@ router.post('/getpaginationtable',function (req, res) {
         });
       }
 });
+
+// UPDATE USER LIST
+router.post('/updatelist',function(req,res){
+
+    instance.updateOne({"_id" : req.body.id},{ $set:{"email":req.body.email,"phone":req.body.phone,"city":req.body.city,"status":req.body.status,"role":req.body.role}},function(error,result){
+        if(error)
+        throw error;
+        else {
+            if(req.body.id == req.session.data._id)
+            {
+                req.session.data.email = req.body.email;
+                req.session.data.phone = req.body.phone;
+                req.session.data.city = req.body.city;
+                req.session.data.status = req.body.status;
+                req.session.data.role = req.body.role;
+            }
+            res.send("UPDATED");
+        }
+    })
+})
+//Send mail request
+router.post('/mailPostrequest',function(req,res)
+{
+    console.log(req.body);
+
+
+    var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+    user: process.env.MAILER_ID,
+    pass: process.env.MAILER_PASSWORD 
+    }
+    });
+
+    var mailOptions = {
+    from: 'parambedi1453@gmail.com',
+    to: req.body.email,
+    subject: req.body.subject,
+    text: req.body.textarea,
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+    console.log(error);
+    } else {
+    console.log('Email sent: ' + info.response);
+    }
+    });
+    res.send("MAIL SENT");
+
+})
+
+//DEACTIVATE USER FUNCTION
+router.post('/deactivate',function(req,res){
+    //serverobject = req.body;
+    //console.log(req.body.name);
+    instance.updateOne({"_id" : req.body.id},{ $set:{"state" : "1"}},function(error,result){
+        if(error)
+        throw error;
+        else {
+            res.send("STATE CHANGED");
+        }
+    })
+})
+//ACTIVATE USER FUNCTION
+router.post('/activate',function(req,res){
+    //serverobject = req.body;
+//    console.log(req.body.name);
+    instance.updateOne({"_id" : req.body.id},{ $set:{"state" : "0"}},function(error,result){
+        if(error)
+        throw error;
+        else {
+            res.send("ACTIVATED");
+        }
+    })
+})
+
+
 
 module.exports = router
