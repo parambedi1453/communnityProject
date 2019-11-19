@@ -14,4 +14,8 @@ router.get('/addUser',logger,function(req,res){
     res.render('adduser',{obj : req.session.data});
 })
 
+
+router.get('/changePassword',logger,function(req,res){
+    res.render('changepassword',{obj : req.session.data})
+})
 module.exports = router

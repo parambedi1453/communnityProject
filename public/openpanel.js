@@ -25,7 +25,7 @@ function open_adduser_page()
 }
 function changepassword()
 {
-    window.location ='/changePassword'
+    window.location ='/admin/changePassword'
 }
 function admincomm()
 {
