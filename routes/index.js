@@ -93,4 +93,28 @@ router.post('/createuser',function(req,res){
 
 })
 
+
+//CHANGE PASSWORD OPERATION
+router.post('/editpassword',function (req,res)
+{
+    serverobject = req.body;
+    if(serverobject.oldp!=req.session.data.password)
+    {
+       res.send("INCORRECT OLD PASSWORD");
+    }
+    else {
+       instance.updateOne({ "_id" : req.session.data._id} , { $set: { "password" : serverobject.newp }} , function(error,result)
+       {
+           if(error)
+           throw error;
+           else {
+               req.session.data.password = serverobject.newp
+               console.log(req.session.data.password);
+               res.send("PASSWORD CHANGED");
+           }
+       })
+       //res.send("PASSWORD CHANGED");
+    }
+})
+
 module.exports = router
