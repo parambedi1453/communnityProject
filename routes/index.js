@@ -9,7 +9,7 @@ router.get('/',(req,res)=>{
     res.render('loginPage')
 })
 
-
+// login route
 router.post('/login',function(req,res){
     console.log(req.body);
     instance.findOne({
@@ -115,6 +115,13 @@ router.post('/editpassword',function (req,res)
        })
        //res.send("PASSWORD CHANGED");
     }
+})
+
+
+router.get('/exit',function(req,res){
+    req.session.data.isLogin = 0;
+    req.session.destroy();
+    res.redirect('/');
 })
 
 module.exports = router

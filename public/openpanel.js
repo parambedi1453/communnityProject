@@ -33,7 +33,7 @@ function admincomm()
 }
 function homepage()
 {
-    window.location = "/profilePage"
+    window.location = "/admin/profilePage"
 }
 function opentagpage()
 {
