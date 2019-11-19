@@ -37,7 +37,7 @@ function homepage()
 }
 function opentagpage()
 {
-    window.location = "/tagPage"
+    window.location = "/admin/tagPage"
 }
 
 

@@ -3,6 +3,7 @@ const router = express.Router()
 const logger = require('../middlewares/logger')
 const instance = require('../models/user')
 const nodemailer = require('nodemailer')
+const taginstance = require('../models/tag')
 
 // login router
 router.get('/',(req,res)=>{
@@ -312,5 +313,17 @@ router.post('/activate',function(req,res){
 })
 
 
+//ADD TAG TO TABLE FUNCTION
+router.post('/addtagtotable',function(req,res){
+    console.log(req.body);
+    taginstance.create(req.body,function(error,result){
+        if(error)
+        throw error;
+        else {
+            console.log(result);
+            res.send("Tag entered");
+        }
+    })
+})
 
 module.exports = router
