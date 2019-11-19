@@ -43,7 +43,7 @@ function opentagpage()
 
 function openuserlist()
 {
-    window.location="/userlistPage";
+    window.location="/admin/userlistPage";
 }
 /**************************************************************************/
 /* switch to user  side function */

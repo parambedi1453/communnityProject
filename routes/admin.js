@@ -18,4 +18,10 @@ router.get('/addUser',logger,function(req,res){
 router.get('/changePassword',logger,function(req,res){
     res.render('changepassword',{obj : req.session.data})
 })
+
+router.get('/userlistPage',logger,function(req,res){
+    res.render('userlist.ejs',{obj : req.session.data})
+})
+
+
 module.exports = router

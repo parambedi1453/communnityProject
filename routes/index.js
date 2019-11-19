@@ -3,6 +3,7 @@ const router = express.Router()
 const logger = require('../middlewares/logger')
 const instance = require('../models/user')
 const nodemailer = require('nodemailer')
+
 // login router
 router.get('/',(req,res)=>{
     // res.send("STARTING WEB AGain")
@@ -117,11 +118,119 @@ router.post('/editpassword',function (req,res)
     }
 })
 
-
+// Logout route
 router.get('/exit',function(req,res){
     req.session.data.isLogin = 0;
     req.session.destroy();
     res.redirect('/');
 })
+
+router.post('/getpaginationtable',function (req, res) {
+    // console.log(req.body);
+    // console.log(req.body.order[0].column);
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+    var count;
+
+    if(req.body.order[0].column==0)
+    {
+      if(req.body.order[0].dir=="asc")
+      getdata("email",1);
+      else
+      getdata("email",-1);
+    }
+    else if(req.body.order[0].column==1)
+    {
+      if(req.body.order[0].dir=="asc")
+      getdata("phone",1);
+      else
+      getdata("phone",-1);
+    }
+    else if(req.body.order[0].column==2)
+    {
+      if(req.body.order[0].dir=="asc")
+      getdata("city",1);
+      else
+      getdata("city",-1);
+    }
+    else if(req.body.order[0].column==3)
+    {
+      if(req.body.order[0].dir=="asc")
+      getdata("status",1);
+      else
+      getdata("status",-1);
+    }
+    else if(req.body.order[0].column==4)
+    {
+      if(req.body.order[0].dir=="asc")
+      getdata("role",1);
+      else
+      getdata("role",-1);
+    }
+
+    else {
+      getdata("email",1);
+    }
+
+
+    function getdata(colname,sortorder)
+    {
+        instance.countDocuments(function(e,count){
+          var start=parseInt(req.body.start);
+          var len=parseInt(req.body.length);
+          var role=req.body.role;
+          var status=req.body.status;
+          var search=req.body.search.value;
+          var getcount=10;
+         // console.log(req.body.search.value.length);
+
+
+        var findobj={};
+          console.log(role,status);
+          if(role!="all")
+             { findobj.role=role;
+             }
+          else{
+              delete findobj["role"];
+          }
+          if(status!="all")
+              {findobj.status=status;}
+          else{
+              delete findobj["status"];
+          }
+          if(search!='')
+              findobj["$or"]= [{
+              "email":  { '$regex' : search, '$options' : 'i' }
+          }, {
+              "city": { '$regex' : search, '$options' : 'i' }
+          }
+          ,{
+              "status":  { '$regex' : search, '$options' : 'i' }
+          }
+          ,{
+              "role": { '$regex' : search, '$options' : 'i' }
+          }]
+          else{
+              delete findobj["$or"];
+          }
+
+
+          instance.find(findobj).countDocuments(function(e,coun){
+          getcount=coun;
+        }).catch(err => {
+          console.error(err)
+          res.send(err)
+        })
+
+          instance.find(findobj).skip(start).limit(len).sort({[colname] : sortorder})
+          .then(data => {
+              res.send({"recordsTotal" : count,"recordsFiltered" :getcount,data})
+            })
+            .catch(err => {
+              console.error(err)
+            //  res.send(error)
+            })
+        });
+      }
+});
 
 module.exports = router
