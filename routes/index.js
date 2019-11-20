@@ -4,6 +4,7 @@ const logger = require('../middlewares/logger')
 const instance = require('../models/user')
 const nodemailer = require('nodemailer')
 const taginstance = require('../models/tag')
+const comminstance = require('../models/community')
 
 // login router
 router.get('/',(req,res)=>{
@@ -12,7 +13,7 @@ router.get('/',(req,res)=>{
 })
 
 // login route
-router.post('/login',function(req,res){
+router.post('/login',logger,function(req,res){
     console.log(req.body);
     instance.findOne({
         email : req.body.email,
@@ -408,4 +409,44 @@ router.post('/delTag',function(req,res){
     })
 })
 
+//ADD COMMUNITY
+router.post('/createcomm',function(req,res){
+    console.log(req.body);
+    comminstance.create(req.body,function(error,result){
+        if(error)
+        throw error;
+        else {
+            console.log(result);
+            /*var pushob = new Object();
+            pushob.id = result._id;
+            pushob.cname = result.commname;
+            pushob.cdesc = result.commdesc;
+            pushob.cdate = result.commdate;*/
+
+            instance.updateOne({"_id" : req.session.data._id},{ $push : {ownedcomm : result._id }},function(error,result)
+            {
+                if(error)
+                throw error;
+                else {
+                    console.log("ENTERED IN USER DATABASE ALSO")
+                }
+            })
+            res.send("Community Entered");
+        }
+    })
+})
+
+//get community TABLE
+
+router.get('/getCommunityforUser',function(req,res){
+
+
+    comminstance.find({ $or: [{ ownerid : req.session.data._id },{commjoin : {$in : [req.session.data._id] }},{commasktojoin : {$in : [req.session.data._id] }}] }).exec(function(error,result){
+        if(error)
+        throw error;
+        else {
+            res.send(JSON.stringify(result));
+        }
+    })
+})
 module.exports = router

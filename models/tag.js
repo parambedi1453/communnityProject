@@ -7,4 +7,6 @@ var tagSchema = new mongoose.Schema({
     deleteaction : String
 })
 
-module.exports =  mongoose.model('tags',tagSchema);
+let taginstance = mongoose.model('tags',tagSchema);
+
+module.exports =  taginstance

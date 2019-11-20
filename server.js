@@ -49,11 +49,12 @@ mongoose.connection.on('error',(err) => {
 //ROUTES requiring
 const indexRouter = require('./routes/index')
 const adminRouter = require('./routes/admin')
-
+const communityRouter = require('./routes/community')
 
 // using routes
 app.use('/',indexRouter)
 app.use('/admin',adminRouter)
+app.use('/community',communityRouter)
 
 
 app.listen(3000, ()=> console.log('server started'))

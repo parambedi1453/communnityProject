@@ -49,7 +49,7 @@ function openuserlist()
 /* switch to user  side function */
 function switchyes()
 {
-    window.location = "/communityPanel";
+    window.location = "/community/communityPanel";
 }
 function updateprofilepage()
 {

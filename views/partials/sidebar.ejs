@@ -1,6 +1,6 @@
 
 <div id="sidebar">
-    <ul class="sidebar-list">
+    <ul id="admin_as_admin" class="sidebar-list">
         <li class="list" id="mobile-pic">
             <div style="margin-right:10px">
                 <center>
@@ -16,46 +16,6 @@
                 Cq
         </a>
         </li>
-
-        <!-----** SWITCH AS PANEL **-- -->
-
-        <li class="list" id="sidebar-user">
-        <a onclick="updateprofilepage()">
-            <span class="list-span">
-                <i class="fa fa-user" id="icon"></i>
-            </span>
-                <%= obj.name %>
-        </a>
-        </li>
-
-        <li class="list" id="sidebar-users">
-        <a onclick="openCommpage()">
-            <span class="list-span">
-                <i class="fa fa-users" id="icon"></i>
-            </span>
-                Communities
-        </a>
-        </li>
-
-        <li class="list" id="sidebar-switchuser">
-            <a data-toggle="modal" data-target="#switchAsAdmin">
-                <span class="list-span">
-                    <i class="fas fa-toggle-on" id="icon"></i>
-                </span>
-                Switch As User
-            </a>
-        </li>
-
-        <li class="list" id="sidebar-password2">
-            <a onclick="changepassword2()">
-                <span class="list-span">
-                    <i class="fas fa-lock" id="icon"></i>
-                </span>
-                Change Password
-            </a>
-        </li>
-
-        <!-- *********************  -->
 
         <li class="list" id="sidebar-home">
             <a onclick="homepage()">
@@ -113,6 +73,72 @@
         </li>
 
         <li class="list" id="sidebar-password">
+            <a onclick="changepassword()">
+                <span class="list-span">
+                    <i class="fas fa-lock" id="icon"></i>
+                </span>
+                Change Password
+            </a>
+        </li>
+
+        <li class="list">
+            <a data-toggle="modal" data-target="#logModal">
+                <span class="list-span">
+                    <i class="fas fa-sign-out-alt" id="icon"></i>
+                </span>
+                Logout
+            </a>
+        </li>
+
+
+    </ul>
+    <ul id="admin_as_user" class="sidebar-list" style="display: none;">
+        <li class="list" id="mobile-pic">
+            <div style="margin-right:10px">
+                <center>
+                    <img src="<%= obj.photoname %>" id="mobile-img">
+                </center>
+            </div>
+        </li>
+        <li class="list" id="bars">
+        <a onclick="openbar()" id="open">
+            <span class="list-span">
+                <i class="fas fa-bars" id="icon"></i>
+            </span>
+                Cq
+        </a>
+        </li>
+
+        <!-----** SWITCH AS PANEL **-- -->
+
+        <li class="list" id="sidebar-user">
+        <a onclick="updateprofilepage()">
+            <span class="list-span">
+                <i class="fa fa-user" id="icon"></i>
+            </span>
+                <%= obj.name %>
+        </a>
+        </li>
+
+        <li class="list" id="sidebar-users">
+        <a onclick="openCommpage()">
+            <span class="list-span">
+                <i class="fa fa-users" id="icon"></i>
+            </span>
+                Communities
+        </a>
+        </li>
+
+        <li class="list" id="sidebar-switchuser">
+            <a data-toggle="modal" data-target="#switchAsAdmin">
+                <span class="list-span">
+                    <i class="fas fa-toggle-on" id="icon"></i>
+                </span>
+                Switch As User
+            </a>
+        </li>
+
+         <li class="list" id="sidebar-password">
             <a onclick="changepassword()">
                 <span class="list-span">
                     <i class="fas fa-lock" id="icon"></i>
