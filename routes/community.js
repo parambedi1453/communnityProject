@@ -12,4 +12,10 @@ router.get('/addCommunitySwitch',logger,function(req,res){
     res.render('addcommunityswitch',{obj : req.session.data});
 })
 
+// app.get('/userSearch',logger,function(req,res){
+//     res.render('usersearch',{obj : req.session.data});
+// })
+router.get('/communitySearch',logger,function(req,res){
+    res.render('communitysearch',{obj : req.session.data});
+})
 module.exports = router

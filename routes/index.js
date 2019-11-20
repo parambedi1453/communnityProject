@@ -13,7 +13,7 @@ router.get('/',(req,res)=>{
 })
 
 // login route
-router.post('/login',logger,function(req,res){
+router.post('/login',function(req,res){
     console.log(req.body);
     instance.findOne({
         email : req.body.email,
