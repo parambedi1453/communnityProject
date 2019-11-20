@@ -525,8 +525,20 @@ router.post('/joinbtnclick',function(req,res)
             }
         })
     }
-
-
 })
 
+
+//To get Community Members details
+router.post('/getcommdetails' , function(req,res){
+
+    var query = [{path : 'commjoin',select : {'name' : 1 ,'photoname' : 1}},{path : 'commasktojoin',select : {'name' : 1 ,'photoname' : 1}},{path : 'communityrequest',select : {'name' : 1 ,'photoname' : 1}},{path : 'ownerid',select : {'name' : 1 ,'photoname' : 1}}];// YE ABB Ids ki jgh array of objects bnn gaya hai
+    comminstance.findOne({ "_id" : req.body.id }).populate(query).exec(function(error,resultobj){
+        if(error)
+        throw error;
+        else {
+            console.log(resultobj);
+            res.send(resultobj);
+        }
+    });
+});
 module.exports = router

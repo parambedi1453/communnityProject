@@ -32,7 +32,7 @@ var userSchema = new mongoose.Schema({
     journey:String,
     expectations:String,
     githubid:String,
-    photoname:String,
+    photoname:{ type: String, default : "/default.png" },
     isupdate:String,
     ownedcomm : [{type : mongoose.Schema.Types.ObjectId , ref : 'communities'}],
     joincomm :  [{type : mongoose.Schema.Types.ObjectId , ref : 'communities'}],
