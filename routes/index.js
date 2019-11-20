@@ -449,4 +449,84 @@ router.get('/getCommunityforUser',function(req,res){
         }
     })
 })
+
+// Get community for search using scroll limits code
+router.post('/getCommunityforSearch',function(req,res){
+
+    console.log(req.body);
+    let skp = req.body.skip;
+    let lmt = req.body.limit;
+    comminstance.find({ $and: [{ ownerid : { $not : { $eq : req.session.data._id }}},{commjoin : {$nin : [req.session.data._id] }},{commasktojoin : {$nin : [req.session.data._id] }}] }).skip(skp).limit(lmt).exec(function(error,result){
+        if(error)
+        throw error;
+        else {
+            res.send(JSON.stringify(result));
+        }
+    })
+
+})
+
+//get community TABLE
+
+router.get('/getCommunityforUser',function(req,res){
+
+
+    comminstance.find({ $or: [{ ownerid : req.session.data._id },{commjoin : {$in : [req.session.data._id] }},{commasktojoin : {$in : [req.session.data._id] }}] }).exec(function(error,result){
+        if(error)
+        throw error;
+        else {
+            res.send(JSON.stringify(result));
+        }
+    })
+})
+
+//ADD JOINED MEMBERS TO COMMUNITY
+router.post('/joinbtnclick',function(req,res)
+{
+    console.log(req.body);
+    if(req.body.commrule == "d")
+    {
+        comminstance.updateOne({"_id" : req.body._id},{ $push : {commjoin : req.session.data._id}},function(error,result)
+        {
+            if(error)
+            throw error;
+            else {
+                res.send("USER JOINED WITH COMMUNITY");
+            }
+        })
+
+        //MAKE CHANGES IN USER ALSO THAT WHICH COMMUNITIES IT HAS JOINED
+        instance.updateOne({"_id" : req.session.data._id},{ $push : {joincomm : req.body._id }},function(error,result)
+        {
+            if(error)
+            throw error;
+            else {
+                console.log("ENTERED IN USER DATABASE ALSO")
+            }
+        })
+    }
+    else if(req.body.commrule == "p")
+    {
+        comminstance.updateOne({"_id" : req.body._id},{ $push : {commasktojoin : req.session.data._id}},function(error,result)
+        {
+            if(error)
+            throw error;
+            else {
+                res.send("USER HAS REQUESTED THIS COMMUNITY");
+            }
+        })
+
+        instance.updateOne({"_id" : req.session.data._id},{ $push : {asktojoincomm : req.body._id }},function(error,result)
+        {
+            if(error)
+            throw error;
+            else {
+                console.log("ENTERED IN USER DATABASE ALSO")
+            }
+        })
+    }
+
+
+})
+
 module.exports = router
