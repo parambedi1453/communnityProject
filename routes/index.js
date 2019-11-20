@@ -326,4 +326,86 @@ router.post('/addtagtotable',function(req,res){
     })
 })
 
+// TAG SIDE PAGINATION
+router.post('/getTagTableServerSide',function(req,res){
+
+    var count;
+    // console.log(req.body);
+    if(req.body.order[0].column==0)
+    {
+        if(req.body.order[0].dir=="asc")
+        getdata("tagname",1);
+        else
+        getdata("tagname",-1);
+    }
+    else if(req.body.order[0].column==1)
+    {
+        if(req.body.order[0].dir=="asc")
+        getdata("createdby",1);
+        else
+        getdata("createdby",-1);
+    }
+    else if(req.body.order[0].column==2)
+    {
+        if(req.body.order[0].dir=="asc")
+        getdata("createdate",1);
+        else
+        getdata("createdate",-1);
+    }
+    else {
+        getdata("tagname",1);
+      }
+
+    function getdata(colname,sortorder)
+    {
+        taginstance.countDocuments(function(e,count){
+            var start=parseInt(req.body.start);
+            var len=parseInt(req.body.length);
+            var getcount=10;
+            var search=req.body.search.value;
+
+            var findobj = {deleteaction:"1",};
+            if(search!='')
+                findobj["$or"] = [{
+                "tagname":  { '$regex' : search, '$options' : 'i' }
+            }, {
+                "createdby":{ '$regex' : search, '$options' : 'i' }
+            },{
+                "createdate": { '$regex' : search, '$options' : 'i' }
+            }]
+            else
+              delete findobj["$or"];
+
+              taginstance.find(findobj).countDocuments(function(e,coun){
+                getcount=coun;
+              }).catch(err => {
+                console.error(err)
+                res.send(error)
+              })
+
+                taginstance.find(findobj).skip(start).limit(len).sort({[colname] : sortorder})
+            .then(data => {
+                res.send({"recordsTotal" : count,"recordsFiltered" :getcount,data})
+              })
+              .catch(err => {
+                console.error(err)
+              //  res.send(error)
+              })
+        })
+    }
+})
+
+//DELETE TAG OPERATION
+router.post('/delTag',function(req,res){
+    //serverobject = req.body;
+    console.log(req.body.name);
+    taginstance.updateOne({"_id" : req.body.id},{ $set:{"deleteaction" : "0"}},function(error,result){
+        if(error)
+        throw error;
+        else {
+            res.send("ACTION COMPLETED");
+        }
+    })
+})
+
 module.exports = router
