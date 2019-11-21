@@ -327,7 +327,7 @@
                 console.log(name)
                 let divblock='<div class="col-sm-12 col-xs-12" style="margin-top:5px;border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
                     divblock +='<div class="col-sm-2 col-xs-5" style="padding:5px;"> <a><img src="/default.png" style="height: 50px;width: 50px;border: 3px solid #fff;border-radius: 50%;box-shadow: 0 0 10px rgba(0,0,0,0.5);"></a></div>'
-                    divblock+= '<div class="col-sm-10 col-xs-7"> <a id="username">'+ob.commjoin[i].name+'</a></div></div>'
+                    divblock+= '<div class="col-sm-10 col-xs-7"> <a id="username" style="margin-top: 20px;font-weight: bold;font-size: 18px; display: inline-block;text-transform: capitalize;cursor: pointer;color: #337ab7;">'+ob.commjoin[i].name+'</a></div></div>'
                 $("#showMemberDiv").append(divblock);
             }
             
