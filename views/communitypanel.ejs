@@ -196,6 +196,7 @@
                 var para = document.createElement("p");
                 var a1 = document.createElement("a");
                 a1.innerHTML = ob.commname;
+                a1.setAttribute("href","/community/discussions/"+ob._id);
                 var a2 = document.createElement("a");
                 a2.setAttribute("style","margin-left:5px;")
                 a2.innerHTML = "Requests(0)";
@@ -255,6 +256,7 @@
                 var para = document.createElement("p");
                 var a1 = document.createElement("a");
                 a1.innerHTML = ob.commname;
+                a1.setAttribute("href","/community/discussions/"+ob._id);
                 var a2 = document.createElement("a");
                 a2.setAttribute("style","margin-left:5px;")
                 a2.innerHTML = "Members("+ob.memberno+")";;
@@ -303,6 +305,7 @@
                 pendinglabel.innerHTML="Pending";
                 var a1 = document.createElement("a");
                 a1.innerHTML = " " + ob.commname;
+                a1.setAttribute("href","/community/discussions/"+ob._id);
                 var a2 = document.createElement("a");
                 a2.setAttribute("style","margin-left:5px;")
                 a2.innerHTML = "  Members("+ob.memberno+")";

@@ -30,4 +30,15 @@ router.get('/manageCommunity/:pro',logger,function(req,res){
         }
     })
 })
+
+router.get('/discussions/:pro',logger,function(req,res){
+    var aid = req.params.pro;
+    comminstance.findOne({"_id" : aid} ,function(error,result){
+        if(error)
+        throw error;
+        else {
+            res.render('discussion',{ objcomm : result , obj : req.session.data });
+        }
+    })
+})
 module.exports = router

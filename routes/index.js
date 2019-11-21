@@ -541,4 +541,42 @@ router.post('/getcommdetails' , function(req,res){
         }
     });
 });
+
+// get Community dicussions
+router.post('/getCommDiscusions',function(req,res){
+
+    comminstance.findOne({"_id" : req.body.id}).exec(function(error,result)
+    {
+        if(error)
+        throw error;
+        else {
+            res.send(result);
+        }
+    })
+})
+
+// Enter comm Dicussions
+router.post('/enterCommDiscusions',function(req,res){
+    console.log(req.body);
+    comminstance.updateOne({"_id" : req.body.id},
+    {
+        $push : {
+            commdiscussion : {
+                                "dtitle" : req.body.dicussiontitle,
+                                "ddetail" : req.body.discussiondetail,
+                                "pname" : req.body.pname,
+                                "pid" : req.body.pid,
+                                "dday" : req.body.day,
+                            }
+        }
+    },function(error,result)
+    {
+        if(error)
+        throw error;
+        else {
+            res.send("DiSCUSSSION ENTERED");
+        }
+
+    })
+})
 module.exports = router
