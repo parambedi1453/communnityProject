@@ -157,9 +157,9 @@
         }
     </style>
     <body>
-        <% include partials/userheader.ejs %>
+        <% include partials/header.ejs %>
             <div id="viewscreen">
-                <% include partials/usersidebar.ejs %>
+                <% include partials/sidebar.ejs %>
                     <div id="rightview">
                         <div class="container-fluid" style="min-width:368px;padding:0;">
                             <div class="row">
@@ -213,39 +213,31 @@
                                     <!-- MAIN CONTENT OF PAGE BEGINS -->
                                     <div class="container">
                                         <p id="getCommId" style="display:none"><%= objcomm._id %></p>
-                                        <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12" style="padding-bottom:5px;border-bottom: 1px solid #c4c4c4;">
-                                            <nonlink style="cursor:context-menu;" id="nonlink">
-                                                Manage Community
-                                            </nonlink>
-                                            <a style="float:right;font-weight: 600">Invite Users</a>
-                                            <a id="editCommLink" style="float: right;font-weight: 600;margin-right: 15px;">Edit Community</a>
-                                        </div>
-
-                                        <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12" style="padding : 10px 0 0 0;">
-                                            <div class="col-sm-3" style="padding:0;box-shadow:0 3px 10px 0 rgba(115,143,147,.3);">
-                                                <div class="panel-heading" id="editCommpanel" style="background: #fff;margin-bottom: 5px;">
-                                                    <center>
-                                                        <a class="btn btn-primary" >
-                                                            Edit Community
-                                                        </a>
-                                                    </center>
-                                                </div>
-                                                <div class="panel-body" style="background: #fff;  box-shadow:0 3px 10px 0 rgba(115,143,147,.3);">
-                                                    <center>
-                                                        <a id="ausers">Users(<%= objcomm.commjoin.length %>)</a><br>
-                                                        <a id="amanager">Managers()</a><br>
-                                                        <a id="arequest">Requests(<%= objcomm.commasktojoin.length %>)</a><br>
-                                                        <a id="ainvite">Invited Members(<%= objcomm.comminvite.length %>)</a><br>
-                                                    </center>
-                                                </div>
-                                                <br>
+                                        <div style="margin-top:20px;margin-bottom:50px">
+                                            <div class="col-sm-3 col-md-3 col-xs-4 col-lg2">
+                                                <a id="showManagerList" style="font-weight: bold;font-size: 18px;text-transform: capitalize;color :rgb(73,73,73)">Managers(1)</a>
+                                            </div>
+                                            <div class="col-sm-3 col-md-3 col-xs-4 col-lg2">
+                                                <a id="showMemberList" style="font-weight: bold;font-size: 18px;text-transform: capitalize;color: #337ab7;">Members(<%= objcomm.commjoin.length %>)</a>
                                             </div>
 
-                                            <div class="col-sm-9" id="listOfUMRI">
-                                                <div id="rowAppend">
+                                            <div class="col-sm-12">
+                                                <div id="showOwnerDiv" class="col-sm-12 col-xs-12" style="margin-top: 5px;border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">
+                                                    <div class="col-sm-2 col-xs-5" style="padding:5px">
+                                                        <a id="aownerImage"><img src="/default.png" style="height: 50px;width: 50px;border: 3px solid #fff;border-radius: 50%;box-shadow: 0 0 10px rgba(0,0,0,0.5);"><span class="label label-primary">Owner</span></a>
+                                                    </div>
+                                                    <div class="col-sm-9 col-xs-7">
+                                                        <a id="aownername" style="margin-top: 50px;font-weight: bold;font-size: 18px;text-transform: capitalize;color: #337ab7;"></a>
+                                                    </div>
+
+                                                </div>
+                                                <div id="showMemberDiv" class="col-sm-12 col-xs-12" style="margin-top:5px;display: none;">
+
                                                 </div>
                                             </div>
+
                                         </div>
+
 
                                     </div>
 
@@ -255,7 +247,7 @@
                     </div>
             </div>
     </body>
-    <script src="/userOpenpanel.js">
+    <script src="/openpanel.js">
     </script>
     <script>
                 function toOpenListFunc() {
@@ -276,6 +268,71 @@
           }
         }
     </script>
-    <script src="/settings.js">
+    <script>
+        var adminsidebar = document.getElementById('admin_as_admin')
+        adminsidebar.setAttribute("style","display:none");
+        var usersidebar = document.getElementById('admin_as_user')
+        usersidebar.setAttribute("style","display:block")
+        //*****************************************************************
     </script>
+    <script>
+                $("#showManagerList").click(function(){
+                    console.log("show manager list")
+                    $("#showMemberDiv").hide()
+                    $("#showOwnerDiv").show()
+                })
+
+                $("#showMemberList").click(function(){
+                    console.log("show memeber lsit")
+                    $("#showOwnerDiv").hide()
+                    $("#showMemberDiv").show()
+                })
+        getCommunityDetails();
+        function getCommunityDetails()
+        {
+            var getid = document.getElementById("getCommId").innerHTML;
+            var ob  = new Object();
+            ob.id = getid;
+            var request = new XMLHttpRequest();
+            var filename = '/getcommdetails';
+            request.open('POST',filename);
+            request.setRequestHeader("content-Type","application/JSON");
+            request.send(JSON.stringify(ob));
+            request.onload = function()
+            {
+                var obj = JSON.parse(request.responseText);
+                // console.log("AFTERRRRRRRRRRRRRRRRRRRRRRRr")
+                // console.log(obj);
+
+                //BY default Page will Have ownername
+                $("#aownername").html(obj.ownerid.name)
+
+                addToManger(obj)
+                addToMemeber(obj)
+
+            }
+
+        }
+        function addToManger(ob)
+        {
+            $("#aownername").html(ob.ownerid.name)
+        }
+        function addToMemeber(ob)
+        {
+           
+
+            for(var i = 0;i<ob.commjoin.length;i++)
+            {
+                var name = ob.commjoin[i].name
+                console.log(name)
+                let divblock='<div class="col-sm-12 col-xs-12" style="margin-top:5px;border-top: 1px solid #ccc;border-bottom: 1px solid #ccc;">'
+                    divblock +='<div class="col-sm-2 col-xs-5" style="padding:5px;"> <a><img src="/default.png" style="height: 50px;width: 50px;border: 3px solid #fff;border-radius: 50%;box-shadow: 0 0 10px rgba(0,0,0,0.5);"></a></div>'
+                    divblock+= '<div class="col-sm-10 col-xs-7"> <a id="username">'+ob.commjoin[i].name+'</a></div></div>'
+                $("#showMemberDiv").append(divblock);
+            }
+            
+        }
+        
+    </script>
+
 </html>
