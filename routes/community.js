@@ -53,4 +53,18 @@ router.get('/communityMembers/:pro',logger,function(req,res){
         }
     })
 })
+
+router.get('/communityProfile/:pro',logger,function(req,res){
+
+    var aid = req.params.pro;
+    comminstance.findOne({"_id" : aid} ,function(error,result){
+        if(error)
+        throw error;
+        else {
+            res.render('communityprofile',{ objcomm : result , obj : req.session.data });
+        }
+    })
+
+})
+
 module.exports = router
