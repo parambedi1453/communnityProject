@@ -362,15 +362,18 @@
                         if(userid == obj.commasktojoin[i]._id)
                         {
                             // means user has requested the community to join
-                            let divblock = '<div>REQUESTED</div>'
+                            let divblock = '<div class="col-sm-12 col-xs-12"><center><button class="btn btn-primary">REQUESTED</button></center></div>'
                             $("#usercommRelation").append(divblock);
                             k2=1;
                             break;
                         }
                     }
+                    console.log(k1)
+                    console.log(k2)
                     if(k1==0 && k2==0)
                     {
-                        var rule = document.getElementById("getCommRule")
+                        var rule = document.getElementById("getCommRule").innerHTML
+                        console.log(rule)
                         if(rule=="d")
                         {
                           let divblock = '<div class="col-sm-12 col-xs-12"><center><button class="btn btn-primary"> Join</button></center></div>'
