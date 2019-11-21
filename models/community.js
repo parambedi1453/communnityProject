@@ -16,7 +16,8 @@ var communitySchema = new mongoose.Schema({
     commjoin : [{type : mongoose.Schema.Types.ObjectId , ref : 'users'}],
     commasktojoin : [{type : mongoose.Schema.Types.ObjectId , ref : 'users'}],
     comminvite : [{type : mongoose.Schema.Types.ObjectId , ref : 'users'}],
-    commdiscussion :  { type : Array , "default" : [] },
+    // commdiscussion :  { type : Array , "default" : [] },
+    commdiscussion :[{type : mongoose.Schema.Types.ObjectId , ref :'discussions'}]
 })
 
 let comminstance = mongoose.model('communities', communitySchema);

@@ -4,6 +4,7 @@ const logger = require('../middlewares/logger')
 const instance  = require('../models/user')
 const comminstance = require('../models/community')
 
+
 router.get('/communityPanel',logger,function(req,res){
     res.render('communitypanel',{obj : req.session.data});
 })

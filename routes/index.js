@@ -5,6 +5,7 @@ const instance = require('../models/user')
 const nodemailer = require('nodemailer')
 const taginstance = require('../models/tag')
 const comminstance = require('../models/community')
+const dinstance = require('../models/discussion')
 
 // login router
 router.get('/',(req,res)=>{
@@ -543,40 +544,39 @@ router.post('/getcommdetails' , function(req,res){
 });
 
 // get Community dicussions
-router.post('/getCommDiscusions',function(req,res){
+router.post('/getDiscussion',function(req,res){
 
-    comminstance.findOne({"_id" : req.body.id}).exec(function(error,result)
-    {
+    var query = [ {path : 'commdiscussion',select :{'dtitle' : 1,'ddetail':1,'downer':1,'dtag':1}}];
+    comminstance.findOne({"_id" : req.body.id}).populate(query).exec(function(error,resultobj){
         if(error)
         throw error;
-        else {
-            res.send(result);
+        else{
+            console.log("gooootttt discsussions")
+            // console.log(resultobj)
+            res.send(resultobj)
         }
     })
 })
 
 // Enter comm Dicussions
-router.post('/enterCommDiscusions',function(req,res){
-    console.log(req.body);
-    comminstance.updateOne({"_id" : req.body.id},
-    {
-        $push : {
-            commdiscussion : {
-                                "dtitle" : req.body.dicussiontitle,
-                                "ddetail" : req.body.discussiondetail,
-                                "pname" : req.body.pname,
-                                "pid" : req.body.pid,
-                                "dday" : req.body.day,
-                            }
-        }
-    },function(error,result)
-    {
+router.post('/createDiscussion',function(req,res){
+    console.log('IN CREATE DISCUSSTION PANEL')
+    console.log(req.body)
+    dinstance.create(req.body,function(error,result){
         if(error)
         throw error;
-        else {
-            res.send("DiSCUSSSION ENTERED");
+        else{
+            comminstance.updateOne({"_id" : req.body.commid},{ $push : {commdiscussion : result._id}},function(error,result){
+                if(error)
+                throw error;
+                else
+                {
+                    console.log("DISCUSSSUIN IDD ENTERD IN COOMUNITY ")
+                    res.send("Discussion eneneneterdf");
+                }
+            })
         }
-
     })
 })
+
 module.exports = router

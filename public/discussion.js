@@ -10,7 +10,8 @@ function loadFromServer()
     var ob = new Object();
     ob.id = getCommid;
     var request = new XMLHttpRequest();
-    var filename = '/getCommDiscusions';
+    // var filename = '/getCommDiscusions';
+    var filename = '/getDiscussion'
     request.open('POST',filename);
     request.setRequestHeader("content-Type","application/JSON");
     request.send(JSON.stringify(ob));
@@ -18,12 +19,13 @@ function loadFromServer()
     {
         //console.log(request.responseText);
         var obj = JSON.parse(request.responseText);
-         console.log(obj);
+        console.log("************UIHKNJVBKHNK")
+        console.log(obj);
         //console.log(obj.commdiscussion);
         for(var i in obj.commdiscussion)
         {
-            // console.log(obj.commdiscussion[i])
-            addToDom(obj.commdiscussion[i]);
+            console.log(obj.commdiscussion[i].ddetail)
+            // addToDom(obj.commdiscussion[i]);
         }
 
     }
@@ -158,14 +160,21 @@ postbtn.onclick = function()
     var pname = document.getElementById("pname").innerHTML;//PERSON DETAILS
     var pid = document.getElementById("pid").innerHTML;//PersonID
     var ob = new Object();
-    ob.id = getCommid;
-    ob.dicussiontitle = title;
-    ob.discussiondetail = detail;
-    ob.pname = pname;
-    ob.pid = pid;
-    ob.day = clickday;
+    // ob.id = getCommid;
+    // ob.dicussiontitle = title;
+    // ob.discussiondetail = detail;
+    // ob.pname = pname;
+    // ob.pid = pid;
+    // ob.day = clickday;
+    ob.dtitle = title;
+    ob.ddetail = detail;
+    ob.downer = pname;
+    ob.ddate = clickday;
+    ob.commid = getCommid;
+    
     var request = new XMLHttpRequest();
-    var filename = '/enterCommDiscusions';
+    // var filename = '/enterCommDiscusions';
+    var filename = '/createDiscussion'
     request.open('POST',filename);
     request.setRequestHeader("content-Type","application/JSON");
     request.send(JSON.stringify(ob));
