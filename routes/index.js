@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer')
 const taginstance = require('../models/tag')
 const comminstance = require('../models/community')
 const dinstance = require('../models/discussion')
+const commentinstance = require('../models/comment')
 
 // login router
 router.get('/',(req,res)=>{
@@ -579,4 +580,38 @@ router.post('/createDiscussion',function(req,res){
     })
 })
 
+// Add commment
+router.post('/addComment',function(req,res){
+    console.log('IN ADDDDDD COMMENT PANEL')
+    console.log(req.body)
+    commentinstance.create(req.body,function(error,result){
+        if(error)
+        throw error;
+        else{
+            dinstance.updateOne({"_id" : req.body.did},{ $push : {dcomment : result._id}},function(error,result){
+                if(error)
+                throw error;
+                elses
+                {
+                    console.log("COMMENTTTTT IDDD ENTERD IN discsioon")
+                    res.send("COMMMENT CREATED")
+                }
+            })
+        }
+    })
+})
+
+// get Comments
+router.post('/getComments' ,function(req,res){
+
+    var query = [ { path : 'dcomment' ,select : {'ctitle':1,'cdate' : 1,'cdel':1,'cowner':1}}];
+    dinstance.findOne({"_id" : req.body.id}).populate(query).exec(function(error,resultobj){
+        if(error)
+        throw error;
+        else
+        {
+            res.send(resultobj)
+        }
+    })
+})
 module.exports = router

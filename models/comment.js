@@ -6,7 +6,7 @@ var commentSchema  = new mongoose.Schema({
     cdate:String,
     cdel : String,
     cowner:String,
-    discussionid : [{type : mongoose.Schema.Types.ObjectId , ref :'discussions'}],
+    did : [{type : mongoose.Schema.Types.ObjectId , ref :'discussions'}],
 
 })
 

@@ -7,8 +7,8 @@ var discussionSchema = new mongoose.Schema({
     downer : String,
     ddate:String,
     dtag:String,
-    commid : [{type:mongoose.Schema.Types.ObjectId, ref:'communities'}],
-    dcomments:[{type:mongoose.Schema.Types.ObjectId ,ref :'comments'}]
+    commid : [{type : mongoose.Schema.Types.ObjectId, ref:'communities'}],
+    dcomment:[{type : mongoose.Schema.Types.ObjectId,ref :'comments'}]
 })
 
 let dinstance = mongoose.model('discussions',discussionSchema)
